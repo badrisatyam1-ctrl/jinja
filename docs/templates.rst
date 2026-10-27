@@ -1282,6 +1282,55 @@ Jinja allows basic expressions everywhere.  These work very similarly to
 regular Python; even if you're not working with Python
 you should feel comfortable with it.
 
+Operator Precedence
+~~~~~~~~~~~~~~~~~~~
+
+When an expression contains multiple operators, operators with higher
+precedence are evaluated first.  The following table lists Jinja's operators
+from highest to lowest precedence.  Operators on the same row are grouped from
+left to right, except comparisons, which can be chained.
+
+.. list-table::
+   :widths: 30 70
+   :header-rows: 0
+
+   * - Operators
+     - Description
+   * - ``.`` ``[]`` ``()``
+     - Attribute access, item access, and calls
+   * - ``+x`` ``-x``
+     - Unary plus and minus
+   * - ``**``
+     - Exponentiation (left-associative in Jinja)
+   * - ``*`` ``/`` ``//`` ``%``
+     - Multiplication, division, floor division, and remainder
+   * - ``~``
+     - String concatenation
+   * - ``+`` ``-``
+     - Addition and subtraction
+   * - ``==`` ``!=`` ``>`` ``>=`` ``<`` ``<=`` ``in``
+     - Comparisons and containment
+   * - ``not``
+     - Boolean negation
+   * - ``and``
+     - Boolean and
+   * - ``or``
+     - Boolean or
+   * - ``if`` ``else``
+     - Conditional expression
+
+Filters (``|``) and tests (``is``) apply to the expression immediately before
+them, before a surrounding binary operator.  For example, ``1 + "2" | int``
+is evaluated as ``1 + ("2" | int)``.  Parentheses can make the intended
+grouping explicit, such as ``(1 + "2") | int``.
+
+For example, ``1 + 2 * 3`` is evaluated as ``1 + (2 * 3)`` because
+multiplication has higher precedence than addition.  When operators have the
+same precedence, they generally group from left to right: ``1 + 2 - 3`` is
+evaluated as ``(1 + 2) - 3``.  The exponentiation operator is also
+left-associative in Jinja, so ``3 ** 2 ** 3`` is evaluated as
+``(3 ** 2) ** 3``.  Use parentheses when a different grouping is intended.
+
 Literals
 ~~~~~~~~
 
